@@ -8,6 +8,9 @@ enum PaymentMethod: string
     case CREDIT_CARD_ONE_TIME = 'CREDIT_CARD_ONE_TIME';
     case CREDIT_CARD_INSTALLMENTS = 'CREDIT_CARD_INSTALLMENTS';
 
+    /**
+     * @return class-string<\App\Domain\Payment\Interfaces\PaymentMethodInterface>
+     */
     public function getStrategy(): string
     {
         return match ($this) {
