@@ -10,12 +10,12 @@ class CreditCardOneTimeTest extends TestCase
 {
     public function test_it_applies_discount_correctly(): void
     {
-        config()->set(key: 'constants.DISCOUNT_ONE_TIME', value: 1.1);
+        config()->set('constants.DISCOUNT_ONE_TIME', 0.9);
 
         $method = new CreditCardOneTime();
 
         $total = 10000;
-        $expected = (int) round($total / 1.1);
+        $expected = (int) round($total * 0.9);
 
         $this->assertEquals($expected, $method->getPayableAmount($total));
     }

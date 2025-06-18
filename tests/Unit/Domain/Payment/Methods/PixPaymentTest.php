@@ -11,11 +11,15 @@ class PixPaymentTest extends TestCase
     /** @test */
     public function it_applies_10_percent_discount_correctly(): void
     {
-        config()->set('constants.DISCOUNT_ONE_TIME', 1.1);
+        config()->set('constants.DISCOUNT_ONE_TIME', 0.9);
 
         $pix = new PixPayment();
 
         $result = $pix->getPayableAmount(11000);
-        $this->assertEquals(10000, $result);
+
+        $total = 11000;
+        $expected = (int) round($total * 0.9);
+
+        $this->assertEquals($expected, $result);
     }
 }

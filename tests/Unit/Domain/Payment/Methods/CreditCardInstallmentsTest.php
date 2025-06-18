@@ -41,9 +41,11 @@ class CreditCardInstallmentsTest extends TestCase
         $rate = 0.01;
         $cases = [];
 
-        for ($n = 2; $n <= 12; $n++) {
-            $montante = (int) round($base * pow(1 + $rate, $n));
-            $cases[] = [$n, $montante];
+        for ($installments = 2; $installments <= 12; $installments++) {
+
+            $montante = (int) floor($base * pow(1 + $rate, $installments));
+
+            $cases[] = [$installments, $montante];
         }
 
         return $cases;
