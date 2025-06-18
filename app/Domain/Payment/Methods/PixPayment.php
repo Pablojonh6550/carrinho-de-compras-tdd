@@ -6,9 +6,16 @@ use App\Domain\Payment\Interfaces\PaymentMethodInterface;
 
 class PixPayment implements PaymentMethodInterface
 {
-    public function getPayableAmount(int $total, ?int $installments = null): int
+    /**
+     * Calculates the payable amount after applying a one-time discount.
+     *
+     * @param int $total The total amount to be paid.
+     * @param int|null $installments The number of installments for the payment. Defaults to 1.
+     * @return int The calculated payable amount after applying the discount.
+     */
+    public function getPayableAmount(int $total, ?int $installments = 1): int
     {
         $discount = config("constants.DISCOUNT_ONE_TIME");
-        return (int) round($total / $discount);
+        return (int) round($total * $discount);
     }
 }

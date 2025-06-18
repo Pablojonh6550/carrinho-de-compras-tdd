@@ -6,10 +6,19 @@ use App\Domain\Payment\Interfaces\PaymentMethodInterface;
 
 class CreditCardInstallments implements PaymentMethodInterface
 {
+    /**
+     * @param int $total The total amount to be paid in cents.
+     * @param int|null $installments The number of installments for the payment.
+     * @return int The calculated payable amount after applying the interest based on the strategy.
+     */
     public function getPayableAmount(int $total, ?int $installments): int
     {
         $taxInstallmentCard = config("constants.TAX_INSTALLMENT_CARD");
 
-        return (int) round($total * pow(1 + $taxInstallmentCard, $installments));
+        $valueTotal = $total / 100;
+
+        $montante = $valueTotal * pow(1 + $taxInstallmentCard, $installments);
+
+        return (int) floor($montante * 100);
     }
 }
