@@ -8,8 +8,17 @@ class CartService
 {
     public function __construct(private CalculateCartTotalUseCase $cartUseCase) {}
 
-    public function finishCart($products, $method, $installments)
+    public function finishCart($products, $method, $installments): int
     {
-        $result = $this->cartUseCase->execute($products, $method, $installments);
+        $total = $this->calculateCartTotal($products);
+        $result = $this->cartUseCase->execute($total, $method, $installments);
+
+        return $result;
+    }
+
+    public function calculateCartTotal(array $products): mixed
+    {
+        $total = collect($products)->sum(fn($product) => $product['value'] * $product['quantity']);
+        return $total;
     }
 }
