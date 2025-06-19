@@ -4,5 +4,5 @@ namespace App\Domain\Payment\Interfaces;
 
 interface PaymentMethodInterface
 {
-    public function getPayableAmount(int $total, ?int $installments): int;
+    public function getPayableAmount(float $total, ?int $installments): float;
 }

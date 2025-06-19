@@ -13,9 +13,9 @@ class PixPayment implements PaymentMethodInterface
      * @param int|null $installments The number of installments for the payment. Defaults to 1.
      * @return int The calculated payable amount after applying the discount.
      */
-    public function getPayableAmount(int $total, ?int $installments = 1): int
+    public function getPayableAmount(float $total, ?int $installments = 1): float
     {
         $discount = config("constants.DISCOUNT_ONE_TIME");
-        return (int) round($total * $discount);
+        return (float) round($total * $discount, 2);
     }
 }

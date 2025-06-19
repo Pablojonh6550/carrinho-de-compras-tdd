@@ -14,7 +14,7 @@ class CalculateCartTotalUseCase
      * @param int $installments The number of installments for the payment.
      * @return int The calculated payable amount after applying any discounts or interest based on the strategy.
      */
-    public function execute(int $total, string $method, int $installments): int
+    public function execute(float $total, string $method, int $installments): float
     {
 
         $paymentMethod = PaymentMethod::from($method);

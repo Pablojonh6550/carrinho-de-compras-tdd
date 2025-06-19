@@ -11,7 +11,7 @@ class CreditCardInstallments implements PaymentMethodInterface
      * @param int|null $installments The number of installments for the payment.
      * @return int The calculated payable amount after applying the interest based on the strategy.
      */
-    public function getPayableAmount(int $total, ?int $installments): int
+    public function getPayableAmount(float $total, ?int $installments): float
     {
         $taxInstallmentCard = config("constants.TAX_INSTALLMENT_CARD");
 
@@ -19,6 +19,6 @@ class CreditCardInstallments implements PaymentMethodInterface
 
         $montante = $valueTotal * pow(1 + $taxInstallmentCard, $installments);
 
-        return (int) floor($montante * 100);
+        return (float) round($montante * 100, 2);
     }
 }
