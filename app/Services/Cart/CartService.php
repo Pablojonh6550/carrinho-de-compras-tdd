@@ -8,9 +8,10 @@ class CartService
 {
     public function __construct(private CalculateCartTotalUseCase $cartUseCase) {}
 
-    public function finishCart($products, $method, $installments): int
+    public function finishCart($products, $method, $installments): float
     {
         $total = $this->calculateCartTotal($products);
+
         $result = $this->cartUseCase->execute($total, $method, $installments);
 
         return $result;
