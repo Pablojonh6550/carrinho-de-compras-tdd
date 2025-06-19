@@ -26,4 +26,4 @@ php artisan key:generate
 php artisan migrate --seed
 
 # Executa o processo padrão do container (php-fpm)
-exec php-fpm
+php artisan serve --host=0.0.0.0 --port=80
