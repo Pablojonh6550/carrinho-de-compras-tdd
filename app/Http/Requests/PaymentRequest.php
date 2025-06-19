@@ -28,7 +28,7 @@ class PaymentRequest extends FormRequest
             'products.*.name' => 'required|string',
             'products.*.value' => 'required|numeric|min:1',
             'products.*.quantity' => 'required|integer|min:1',
-            'method' => 'required|string|in:PIX,CARTAO_CREDITO,CARTAO_CREDITO_PARCELADO',
+            'method' => 'required|string|in:PIX,CREDIT_CARD_ONE_TIME,CREDIT_CARD_INSTALLMENTS',
             'installments' => 'required|integer|min:1|max:12',
         ];
     }
