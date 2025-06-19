@@ -11,19 +11,26 @@ const CheckoutScreen = () => {
     const renderInstallmentOptions = () => {
         const options = [];
         for (let i = 2; i <= 12; i++) {
-            const finalValue = total * Math.pow(1.01, i);
-            const perInstallment = finalValue / i;
+            const result = total / 100;
+            const finalValue = result * Math.pow(1.01, i);
+            const totalValue = finalValue * 100;
+            const perInstallment = totalValue / i;
 
             options.push(
                 <option key={i} value={i}>
-                    {i}x de R${perInstallment.toFixed(2)} (Total: R$
-                    {finalValue.toFixed(2)})
+                    {i}x de {formatCurrency(perInstallment)} (Total:
+                    {formatCurrency(totalValue)})
                 </option>
             );
         }
         return options;
     };
-
+    const formatCurrency = (value) => {
+        return value.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+        });
+    };
     const products = [
         {
             id: 1,
@@ -63,18 +70,23 @@ const CheckoutScreen = () => {
 
     const [total] = useState(calculateTotal(products));
     const handlePayment = async () => {
-        const data = new PaymentDTO(method, installments, products);
-        const response = await finishCart(data);
+        try {
+            const data = new PaymentDTO(method, installments, products);
+            const response = await finishCart(data);
+            console.log(data, response.data.data.total_value);
 
-        if (response.status === 200) {
-            alert(
-                response.data.message +
-                    "\n" +
-                    "Total do pedido: R$ " +
-                    response.data.data.total_value
-            );
-        } else {
-            alert("Erro ao realizar o pagamento");
+            if (response.status === 200) {
+                alert(
+                    response.data.message +
+                        "\n" +
+                        "Total do pedido: " +
+                        formatCurrency(response.data.data.total_value)
+                );
+            } else {
+                alert("Erro ao realizar o pagamento");
+            }
+        } catch (error) {
+            console.error(error.response.data);
         }
     };
     return (
@@ -95,7 +107,7 @@ const CheckoutScreen = () => {
                 <h2>Checkout</h2>
                 <hr />
 
-                <h3>Total: R${total.toFixed(2)}</h3>
+                <h3>Total: R$ {formatCurrency(total)}</h3>
 
                 <div className="container-payament">
                     <span
