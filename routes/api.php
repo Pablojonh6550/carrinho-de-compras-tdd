@@ -21,4 +21,4 @@ Route::get("/ping", function () {
     ]);
 });
 
-Route::get("/cart/finish", [CartController::class, "finishCart"]);
+Route::post("/cart/finish", [CartController::class, "finishCart"]);
