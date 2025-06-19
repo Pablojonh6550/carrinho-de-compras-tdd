@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "../css/styles-global.css";
 import ProductCard from "../components/ProductCard.jsx";
+import { finishCart } from "../service/cartService.js";
+import { PaymentDTO } from "../DTO/cartDTO.js";
 
 const CheckoutScreen = () => {
-    const [selectedPayment, setSelectedPayment] = useState("");
-    const [total, setTotal] = useState();
-    const [installments, setInstallments] = useState(2);
+    const [method, setMethod] = useState("PIX");
+    const [installments, setInstallments] = useState(1);
 
     const renderInstallmentOptions = () => {
         const options = [];
@@ -26,31 +27,31 @@ const CheckoutScreen = () => {
     const products = [
         {
             id: 1,
-            title: "Smartphone Galaxy A54",
+            name: "Smartphone Galaxy A54",
             description: "Tela AMOLED 6.5”, 128GB, Câmera Tripla, 5G",
             value: 1799.9,
         },
         {
             id: 2,
-            title: "Notebook Lenovo IdeaPad 3",
+            name: "Notebook Lenovo IdeaPad 3",
             description: "Ryzen 5, 8GB RAM, SSD 256GB, Windows 11",
             value: 2699.0,
         },
         {
             id: 3,
-            title: "Smart TV LG 50'' 4K",
+            name: "Smart TV LG 50'' 4K",
             description: "webOS, HDR, Alexa integrada, Wi-Fi",
             value: 2499.99,
         },
         {
             id: 4,
-            title: "Fone de Ouvido Bluetooth JBL",
+            name: "Fone de Ouvido Bluetooth JBL",
             description: "TWS, Bateria até 20h, Estojo carregador",
             value: 349.9,
         },
         {
             id: 5,
-            title: "Cadeira Gamer ThunderX3",
+            name: "Cadeira Gamer ThunderX3",
             description: "Ergonômica, Couro PU, Reclinável até 180º",
             value: 1199.0,
         },
@@ -60,10 +61,22 @@ const CheckoutScreen = () => {
         return products.reduce((total, product) => total + product.value, 0);
     };
 
-    useEffect(() => {
-        setTotal(calculateTotal(products));
-    }, []);
+    const [total] = useState(calculateTotal(products));
+    const handlePayment = async () => {
+        const data = new PaymentDTO(method, installments, products);
+        const response = await finishCart(data);
 
+        if (response.status === 200) {
+            alert(
+                response.data.message +
+                    "\n" +
+                    "Total do pedido: R$ " +
+                    response.data.data.total_value
+            );
+        } else {
+            alert("Erro ao realizar o pagamento");
+        }
+    };
     return (
         <div className="container">
             <div className="card card-left">
@@ -71,7 +84,7 @@ const CheckoutScreen = () => {
                 {products.map((product) => (
                     <ProductCard
                         key={product.id}
-                        title={product.title}
+                        title={product.name}
                         description={product.description}
                         value={product.value}
                     />
@@ -96,7 +109,7 @@ const CheckoutScreen = () => {
                             name="tabs"
                             id="radio-1"
                             type="radio"
-                            onChange={() => setSelectedPayment("radio-1")}
+                            onChange={() => setMethod("PIX")}
                         />
                         <label htmlFor="radio-1" className="tab">
                             PIX
@@ -106,7 +119,7 @@ const CheckoutScreen = () => {
                             name="tabs"
                             id="radio-2"
                             type="radio"
-                            onChange={() => setSelectedPayment("radio-2")}
+                            onChange={() => setMethod("CREDIT_CARD_ONE_TIME")}
                         />
                         <label htmlFor="radio-2" className="tab">
                             Crédito à vista
@@ -116,7 +129,9 @@ const CheckoutScreen = () => {
                             name="tabs"
                             id="radio-3"
                             type="radio"
-                            onChange={() => setSelectedPayment("radio-3")}
+                            onChange={() =>
+                                setMethod("CREDIT_CARD_INSTALLMENTS")
+                            }
                         />
                         <label htmlFor="radio-3" className="tab">
                             Crédito parcelado
@@ -125,7 +140,7 @@ const CheckoutScreen = () => {
                         <span className="glider"></span>
                     </div>
 
-                    {selectedPayment === "radio-3" && (
+                    {method === "CREDIT_CARD_INSTALLMENTS" && (
                         <div
                             style={{ marginTop: "20px", "text-align": "left" }}
                         >
@@ -149,7 +164,9 @@ const CheckoutScreen = () => {
                     )}
                 </div>
 
-                <button>Finalizar</button>
+                <button type="submit" onClick={handlePayment}>
+                    Finalizar
+                </button>
             </div>
         </div>
     );
