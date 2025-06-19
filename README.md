@@ -54,8 +54,8 @@ Campos necessários:
 ## ▶️ Acessos
 
 -   Aplicação (local): http://localhost:8000 (nginx)
--   Container PHP (CLI): docker-compose exec laravel-app bash
--   Container Node (CLI): docker-compose exec node-frontend bash
+-   Container PHP (CLI): docker exec laravel-app bash
+-   Container Node (CLI): docker exec node-frontend bash
 -   Banco de dados: acessível pela porta configurada no .env (DB_PORT)
 
 ## 🧪 Testes
@@ -63,9 +63,9 @@ Campos necessários:
 -   Localização: `tests/Unit/`
 
 ```conf
-docker-compose exec laravel-app php artisan test
+docker exec -it laravel-app php artisan test
 # ou
-docker-compose exec laravel-app ./vendor/bin/phpunit
+docker-compose exec -it laravel-app ./vendor/bin/phpunit
 
 ```
 
