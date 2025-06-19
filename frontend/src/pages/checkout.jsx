@@ -7,7 +7,6 @@ import { PaymentDTO } from "../DTO/cartDTO.js";
 const CheckoutScreen = () => {
     const [method, setMethod] = useState("PIX");
     const [installments, setInstallments] = useState(1);
-
     const renderInstallmentOptions = () => {
         const options = [];
         for (let i = 2; i <= 12; i++) {
@@ -25,12 +24,14 @@ const CheckoutScreen = () => {
         }
         return options;
     };
+
     const formatCurrency = (value) => {
         return value.toLocaleString("pt-BR", {
             style: "currency",
             currency: "BRL",
         });
     };
+
     const products = [
         {
             id: 1,
@@ -69,11 +70,11 @@ const CheckoutScreen = () => {
     };
 
     const [total] = useState(calculateTotal(products));
+
     const handlePayment = async () => {
         try {
             const data = new PaymentDTO(method, installments, products);
             const response = await finishCart(data);
-            console.log(data, response.data.data.total_value);
 
             if (response.status === 200) {
                 alert(
@@ -89,6 +90,18 @@ const CheckoutScreen = () => {
             console.error(error.response.data);
         }
     };
+    const handleMethodChange = (e) => {
+        const value = e.target.value;
+        setMethod(value);
+
+        if (value === "PIX" || value === "CREDIT_CARD_ONE_TIME") {
+            setInstallments(1);
+        }
+        if (value === "CREDIT_CARD_INSTALLMENTS") {
+            setInstallments(2);
+        }
+    };
+
     return (
         <div className="container">
             <div className="card card-left">
@@ -108,7 +121,11 @@ const CheckoutScreen = () => {
                 <hr />
 
                 <h3>Total: R$ {formatCurrency(total)}</h3>
-
+                {(method === "CREDIT_CARD_ONE_TIME" || method === "PIX") && (
+                    <h4>
+                        Total com desconto: R$ {formatCurrency(total * 0.9)}
+                    </h4>
+                )}
                 <div className="container-payament">
                     <span
                         className="select-installments-text"
@@ -121,29 +138,30 @@ const CheckoutScreen = () => {
                             name="tabs"
                             id="radio-1"
                             type="radio"
-                            onChange={() => setMethod("PIX")}
+                            value="PIX"
+                            onChange={handleMethodChange}
                         />
                         <label htmlFor="radio-1" className="tab">
-                            PIX
+                            PIX (10% de desconto)
                         </label>
 
                         <input
                             name="tabs"
                             id="radio-2"
                             type="radio"
-                            onChange={() => setMethod("CREDIT_CARD_ONE_TIME")}
+                            value="CREDIT_CARD_ONE_TIME"
+                            onChange={handleMethodChange}
                         />
                         <label htmlFor="radio-2" className="tab">
-                            Crédito à vista
+                            Crédito à vista (10% de desconto)
                         </label>
 
                         <input
                             name="tabs"
                             id="radio-3"
                             type="radio"
-                            onChange={() =>
-                                setMethod("CREDIT_CARD_INSTALLMENTS")
-                            }
+                            value="CREDIT_CARD_INSTALLMENTS"
+                            onChange={handleMethodChange}
                         />
                         <label htmlFor="radio-3" className="tab">
                             Crédito parcelado
@@ -153,9 +171,7 @@ const CheckoutScreen = () => {
                     </div>
 
                     {method === "CREDIT_CARD_INSTALLMENTS" && (
-                        <div
-                            style={{ marginTop: "20px", "text-align": "left" }}
-                        >
+                        <div style={{ marginTop: "20px" }}>
                             <label
                                 htmlFor="parcelas"
                                 className="select-installments-text"
