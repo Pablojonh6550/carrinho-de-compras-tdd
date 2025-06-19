@@ -18,6 +18,14 @@
     width: 40%;
     border-radius: 0.5rem;
     flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-img svg {
+    color: white;
+    font-size: 3em;
 }
 
 .card-info {
