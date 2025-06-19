@@ -1,0 +1,153 @@
+.container {
+    display: flex;
+    gap: 20px;
+    width: 920px;
+    margin: 0 auto;
+}
+
+.card {
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 1px 0 rgba(24, 94, 224, 0.15),
+        0 6px 12px 0 rgba(24, 94, 224, 0.15);
+    background-color: #fff;
+}
+
+.card-left {
+    flex: 7;
+    min-width: 0;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.card-right {
+    flex: 3;
+    min-width: 0;
+}
+
+.card-payament {
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    background-color: #fff;
+}
+
+.tabs {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: #fff;
+    box-shadow: 0 0 1px 0 rgba(24, 94, 224, 0.15),
+        0 6px 12px 0 rgba(24, 94, 224, 0.15);
+    padding: 0.25rem;
+    border-radius: 12px;
+}
+
+.tabs * {
+    z-index: 2;
+}
+
+.container-payament {
+    margin-bottom: 3rem;
+}
+
+.container-payament input[type="radio"] {
+    display: none;
+}
+
+.tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    width: 100%;
+    font-size: 0.8rem;
+    color: black;
+    font-weight: 500;
+    border-radius: 99px;
+    cursor: pointer;
+    transition: color 0.15s ease-in;
+}
+
+.container-payament input[type="radio"]:checked + label {
+    color: #185ee0;
+}
+
+.container-payament input[id="radio-1"]:checked ~ .glider {
+    transform: translateY(0);
+}
+
+.container-payament input[id="radio-2"]:checked ~ .glider {
+    transform: translateY(100%);
+}
+
+.container-payament input[id="radio-3"]:checked ~ .glider {
+    transform: translateY(200%);
+}
+
+.glider {
+    position: absolute;
+    display: flex;
+    height: 30px;
+    width: 96.7%;
+    background-color: #e6eef9;
+    z-index: 1;
+    border-radius: 8px;
+    transition: 0.15s ease-out;
+}
+
+@media (max-width: 700px) {
+    .tabs {
+        transform: scale(0.6);
+    }
+}
+
+.select-installments {
+    background-color: #fff;
+    box-shadow: 0 0 1px 0 rgba(24, 94, 224, 0.15),
+        0 6px 12px 0 rgba(24, 94, 224, 0.15);
+    padding: 0.35rem;
+    border-radius: 8px;
+    background-color: #fff;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+.select-installments-text {
+    font-size: 0.8rem;
+    color: black;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+/* From Uiverse.io by portseif */
+button {
+    background-color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    width: 100%;
+    color: #2b2b2b;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.25rem;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    -webkit-box-shadow: 0 0 1px 0 rgba(24, 94, 224, 0.15),
+        0 6px 12px 0 rgba(24, 94, 224, 0.15);
+    box-shadow: 0 0 1px 0 rgba(24, 94, 224, 0.15),
+        0 6px 12px 0 rgba(24, 94, 224, 0.15);
+    cursor: pointer;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+}
+
+button:hover {
+    background-color: #f9fafb;
+}
