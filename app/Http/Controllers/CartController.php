@@ -15,7 +15,6 @@ class CartController extends Controller
 
     public function finishCart(PaymentRequest $request): JsonResponse
     {
-        dd("aqui");
         try {
 
             $result = $this->cartService->finishCart($request->validated('products'), $request->validated('method'), $request->validated('installments'));

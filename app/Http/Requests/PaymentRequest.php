@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\ValidationException;
 
 class PaymentRequest extends FormRequest
 {
@@ -23,9 +25,9 @@ class PaymentRequest extends FormRequest
     {
         return [
             'products' => 'required|array|min:1',
-            'produtos.*.name' => 'required|string',
-            'produtos.*.value' => 'required|numeric|min:1',
-            'produtos.*.quantity' => 'required|integer|min:1',
+            'products.*.name' => 'required|string',
+            'products.*.value' => 'required|numeric|min:1',
+            'products.*.quantity' => 'required|integer|min:1',
             'method' => 'required|string|in:PIX,CARTAO_CREDITO,CARTAO_CREDITO_PARCELADO',
             'installments' => 'required|integer|min:1|max:12',
         ];
@@ -34,12 +36,24 @@ class PaymentRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'products.required' => 'O campo produtos é obrigatório.',
-            'produtos.*.name.required' => 'O campo nome do produto é obrigatório.',
-            'produtos.*.value.required' => 'O campo valor do produto é obrigatório.',
-            'produtos.*.quantity.required' => 'O campo quantidade do produto é obrigatório.',
-            'method.required' => 'O campo método de pagamento é obrigatório.',
-            'installments.required' => 'O campo parcelas é obrigatório.',
+            'products.required' => 'O campo produtos é obrigatório.',
+            'products.*.name.required' => 'O campo nome do produto é obrigatório.',
+            'products.*.value.required' => 'O campo valor do produto é obrigatório.',
+            'products.*.quantity.required' => 'O campo quantidade do produto é obrigatório.',
+            'method.required' => 'O campo método de pagamento é obrigatório.',
+            'installments.required' => 'O campo parcelas é obrigatório.',
         ];
+    }
+
+    protected function failedValidation(Validator $validator): never
+    {
+
+        $errors = $validator->errors()->messages();
+
+        $response = response()->json([
+            'errors' => $errors,
+        ], 422);
+
+        throw new ValidationException($validator, $response);
     }
 }
