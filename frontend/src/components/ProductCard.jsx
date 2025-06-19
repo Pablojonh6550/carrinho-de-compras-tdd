@@ -7,14 +7,16 @@ const ProductCard = (params) => {
         });
     };
     return (
-        <div class="card-product" key={params.id}>
-            <div class="card-img"></div>
-            <div class="card-info">
-                <span class="text-title">{params.title} </span>
-                <span class="text-body">{params.description}</span>
+        <div className="card-product" key={params.id}>
+            <div className="card-img"></div>
+            <div className="card-info">
+                <span className="text-title">{params.title} </span>
+                <span className="text-body">{params.description}</span>
             </div>
-            <div class="card-footer">
-                <span class="text-title">{formatCurrency(params.value)}</span>
+            <div className="card-footer">
+                <span className="text-title">
+                    {formatCurrency(params.value)}
+                </span>
             </div>
         </div>
     );
