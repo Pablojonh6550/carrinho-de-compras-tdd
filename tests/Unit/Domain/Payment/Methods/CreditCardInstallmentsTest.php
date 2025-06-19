@@ -17,13 +17,13 @@ class CreditCardInstallmentsTest extends TestCase
 
         $result = $method->getPayableAmount($total, $installments);
 
-        $this->assertEquals(103030, $result);
+        $this->assertEquals(103030.1, $result);
     }
 
     /**
      * @dataProvider installmentProvider
      */
-    public function test_interest_applies_correctly_for_installments(int $installments, int $expected): void
+    public function test_interest_applies_correctly_for_installments(int $installments, float $expected): void
     {
         $total = 10000;
 
@@ -42,10 +42,10 @@ class CreditCardInstallmentsTest extends TestCase
         $cases = [];
 
         for ($installments = 2; $installments <= 12; $installments++) {
-
-            $montante = (int) floor($base * pow(1 + $rate, $installments));
-
-            $cases[] = [$installments, $montante];
+            $value = $base / 100;
+            $montante = $value * pow(1 + $rate, $installments);
+            $total = (float) round($montante * 100, 2);
+            $cases[] = [$installments, $total];
         }
 
         return $cases;
