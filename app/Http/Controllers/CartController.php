@@ -13,41 +13,18 @@ class CartController extends Controller
 {
     public function __construct(private CartService $cartService) {}
 
-    public function finishCart(): JsonResponse
+    public function finishCart(PaymentRequest $request): JsonResponse
     {
-        $cart = [
-            'products' => [
-                [
-                    'id' => 1,
-                    'name' => 'leite',
-                    'value' => '1000',
-                    'quantity' => 1
-                ],
-                [
-                    'id' => 2,
-                    'name' => 'arroz',
-                    'value' => '2000',
-                    'quantity' => 1
-                ],
-                [
-                    'id' => 3,
-                    'name' => 'feijao',
-                    'value' => '3340',
-                    'quantity' => 1
-                ]
-            ],
-            'method_payment' => 'CREDIT_CARD_INSTALLMENTS',
-            'installments' => 3
-        ];
+        dd("aqui");
         try {
 
-            $result = $this->cartService->finishCart($cart['products'], $cart['method_payment'], $cart['installments']);
+            $result = $this->cartService->finishCart($request->validated('products'), $request->validated('method'), $request->validated('installments'));
             if ($result)
                 return response()->json(['message' => 'Pagamento realizado com sucesso', 'data' => ['total_value' => $result]], 200);
             return response()->json(['message' => 'não foi possivel realizar o pagamento', 'data' => $result], 400);
         } catch (Exception $e) {
             Log::error('Erro ao tentar realizar pagamento', [
-                'paymeny_method' => $cart['method_payment'],
+                'paymeny_method' => $request->validated('method'),
                 'exception' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);

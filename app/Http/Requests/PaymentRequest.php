@@ -30,4 +30,16 @@ class PaymentRequest extends FormRequest
             'installments' => 'required|integer|min:1|max:12',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'products.required' => 'O campo produtos é obrigatório.',
+            'produtos.*.name.required' => 'O campo nome do produto é obrigatório.',
+            'produtos.*.value.required' => 'O campo valor do produto é obrigatório.',
+            'produtos.*.quantity.required' => 'O campo quantidade do produto é obrigatório.',
+            'method.required' => 'O campo método de pagamento é obrigatório.',
+            'installments.required' => 'O campo parcelas é obrigatório.',
+        ];
+    }
 }
